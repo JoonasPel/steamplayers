@@ -49,8 +49,3 @@ cycle anytime.
 The implementation plan of these features is shown below with red color:
 
 ![Features diagram](https://github.com/JoonasPel/steamplayersBackend/blob/main/images/features.png?raw=true)
-
-### Side note
-I didn't have/update this repository while making the project but instead just\
-pushed everything here at once. I created an artificial commit history to\
-show the version history of lambdas, so code changes can be seen.
