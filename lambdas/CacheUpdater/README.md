@@ -1,4 +1,4 @@
-<img src="./images/lambdaszoomed/cacheupdater.PNG" width="50%" alt="Lambda zoomed in">
+<img src="../../images/lambdaszoomed/cacheupdater.PNG" width="50%" alt="Lambda zoomed in">
 
 ### Lambda Responsibility
 Reads all the data needed by the client-side from the RDS and saves it to the ElastiCache for fetching (full cache invalidation).
