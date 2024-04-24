@@ -6,18 +6,38 @@ API for the client data requests. Provides data for current players and trending
 ##### **Succesful execution returns:**
 ```json
 {
-  statusCode: 200,
-  body: { data, aff: affData },
-  headers: { 'Access-Control-Allow-Origin': origin }
+  "statusCode": 200,
+  "body": {
+    "data": [{
+      "gameid": 413150,
+      "playercount": 97820,
+      "peak": 126872,
+      "bottom": 68773,
+      "gamename": "Stardew Valley",
+      }]
+    "aff": [{
+      "gameid": 892970,
+      "url": "/valheim-pc-steam-key-global-i10000236813001",
+      "price": "17.21",
+      "retailprice": "18.70",
+      }]
+  },
+  "headers": {
+    "Access-Control-Allow-Origin": "ORIGIN",
+  },
 }
 ```
 
 ##### **Unsuccesful execution returns:**
 ```json
 {
-    statusCode: 500,
-    body: { message: errorMsg },
-    headers: { 'Access-Control-Allow-Origin': '*' },
+  "statusCode": 500,
+  "body": { 
+    "message": "ERROR MESSAGE",
+  },
+  "headers": {
+    "Access-Control-Allow-Origin": "*",
+  },
 }
 ```
 
