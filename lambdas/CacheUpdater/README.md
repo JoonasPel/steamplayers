@@ -9,9 +9,18 @@ Data saved to ElastiCache includes:
 - Affiliate data as a string
 
 ##### **Succesful execution returns:**
-{ statusCode: 200 }
+```json
+{ 
+  "statusCode": 200,
+}
+```
 ##### **Unsuccesful execution returns:**
-{ statusCode: 500, error: errorMessage }
+```json
+{
+  "statusCode": 500,
+  "error": "ERROR MESSAGE",
+}
+```
 
 ### Version History
 | Version | Changes |
