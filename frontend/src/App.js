@@ -20,15 +20,15 @@ const App = () => {
           <header className="App-header">
             SteamPlayers.info
           </header>
- 
+
           <MainComponent />
-          
+
           <footer className="App-footer">
             Not affiliated with Valve or Steam. All
             trademarks are property of their respective
-            owners.
+            owners!
           </footer>
-          
+
         </div>
       </ThemeProvider>
     </React.Fragment>
