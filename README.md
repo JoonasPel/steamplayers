@@ -49,10 +49,5 @@ The Steam API allows only one game per request, meaning that a big amount of req
    needed addition is a Lambda that fetches new game ids and names from
    Steam API and updates those to RDS and OpenSearch. This Lambda could be
    triggered by the step-function.
-2. Admin panel that allows signing in with admin credentials to see and
-   change certain data in the RDS e.g. game names. And force start an update
-   cycle anytime.
-
-The implementation plan of these features is shown below with red color:
-
-![Features diagram](https://github.com/JoonasPel/steamplayersBackend/blob/main/images/features.png?raw=true)
+2. Admin panel that allows signing in with admin credentials to read and
+   change data in the DB, and force start an update cycle anytime.
