@@ -73,7 +73,7 @@ cost scales by the user traffic and it could be easily scaled to withstand a lar
 users by increasing the concurrency of the two API Lambdas and if needed, the ElastiCache and
 OpenSearch can both be scaled vertically with more powerful nodes and horizontally with more nodes.
 
-#### Future features:
+## Future features:
 
 1. The backend currently does not check the Steam API for new game releases
    but the system is made so that it is straightforward to implement. The
