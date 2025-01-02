@@ -24,11 +24,11 @@ In core backend, EventBridge triggers Step Function every 30 minutes that orches
 processing. The first Lambda reads all game IDs from RDS and sends them as chunks into SQS. Items in
 SQS trigger concurrent Lambdas that collect and process data into RDS. This is needed because
 Steam API allows one game per request. Afterwards another Lambda calculates trending games, and
-finally last Lambda puts all the data that is needed by clients to Elasticache.
+finally last Lambda puts all the data that is needed by clients to ElastiCache.
 
 ### Cache:
 
-After the most recent data has been collected and processed, it is updated to the Elasticache(redis)
+After the most recent data has been collected and processed, it is updated to the ElastiCache(redis)
 with full cache invalidation to allow users to receive the data as fast as possible. With additional cost,
 caching in API Gateway could also be used.
 This approach also importantly isolates the user traffic from the core backend, meaning that it
@@ -62,7 +62,7 @@ Affiliate links can be shown as e.g. "Buy Here!" links next to the trending game
 
 ### Continuous deployment:
 
-Frontend is hosted in AWS Amplify. When a code change is pushed into GitHub main branch, Amplify
+Frontend is hosted in Amplify. When a code change is pushed into GitHub main branch, Amplify
 builds and deploys the updated code.
 
 ### Costs and scalability:
