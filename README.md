@@ -72,6 +72,8 @@ core backend is always the same and independent of the user traffic. The client-
 cost scales by the user traffic and it could be easily scaled to withstand a large amount of
 users by increasing the concurrency of the two API Lambdas and if needed, the ElastiCache and
 OpenSearch can both be scaled vertically with more powerful nodes and horizontally with more nodes.
+Currently OpenSearch is replaced with EC2 (Flask&Woosh) for cost reasons, but for good scalability
+OpenSearch is better choice.
 
 ## Future features:
 
