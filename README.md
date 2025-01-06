@@ -83,4 +83,5 @@ OpenSearch can both be scaled vertically with more powerful nodes and horizontal
    games that don't have e.g. Postgres table yet.
 2. Admin panel that allows signing in with admin credentials to read and
    change data in the DB, and force start an update cycle anytime.
-3. Replace OpenSearch with something cheaper.
+3. ~~Replace OpenSearch with something cheaper.~~
+   - EC2 running Flask Server and Woosh as search engine replaced OpenSearch
