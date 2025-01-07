@@ -2,71 +2,69 @@ import axios from 'axios';
 import validator from 'validator';
 import redis from 'redis';
 
-const maxItemsReturnedFromOpenSearch = 50;
-const axiosTimeout = 10000;
-const maxQueryLength = 30 // excess is just sliced off
-const searchUrl = 'https://vpc-XXXX.' +
-  'eu-north-1.es.amazonaws.com' + '/games/_search';
+const axiosTimeout = 5000;
+const maxQueryLength = 30;
+const gamesReturned = 10;
+const ec2Url = process.env.ec2url;
+const redisUrl = process.env.redisurl;
 
-const getGame = async (url, gamename) => {
-  const response = await axios.get(url, {
-    params: {
-      q: gamename,
-      size: maxItemsReturnedFromOpenSearch
-    },
-    timeout: axiosTimeout,
-  });
-  return response?.data?.hits?.hits;
-};
-
-// connect to redis and test connection.
-// return client or undefined if error
-const setupAndTestConn = async () => {
-  const client = redis.createClient({
-    url: "redis://XXXX.eun1.cache.amazonaws.com:6379",
-  });
-  try {
-    await client.connect();
-    if (await client.ping() == "PONG") {
-      return client;
+const connectRedis = async () => {
+    const client = redis.createClient({url: redisUrl});
+    try {
+        await client.connect();
+        return client;
+    } catch (error) {
+        console.log("Error connecting to redis:", error);
     }
-  } catch (error) {
-    console.log("Error connecting to redis:", error);
-  }
-  return undefined;
+    return undefined;
 };
 
-const redisClient = await setupAndTestConn();
+const response = (statusCode, data) => {
+  return {
+    statusCode,
+    body: JSON.stringify(data),
+    headers: { 'Access-Control-Allow-Origin': '*', },
+  };
+}
+
+const handleQuery = (event) => {
+  let query = event?.queryStringParameters?.query ?? "";
+  query = validator.escape(query);
+  if (query.length > maxQueryLength) {
+    query = query.slice(0, maxQueryLength);
+  }
+  return query;
+}
+
+const redisClient = await connectRedis();
+
 export const handler = async (event, context) => {
   try {
-    if (!redisClient) { throw new Error("error connecting redis") }
-
-    // handle user input/query
-    const query = event?.queryStringParameters?.query ?? "";
-    let sanitizedQuery = validator.escape(query);
-    if (sanitizedQuery.length > maxQueryLength) {
-      sanitizedQuery = sanitizedQuery.slice(0, maxQueryLength);
+    if (!redisClient) { throw new Error('redis connection error') }
+    
+    const query = handleQuery(event);
+    if (!query) {
+      return response(200, []);
     }
 
-    // get game names from openSearch and get data for those from elasticache
-    const result = await getGame(searchUrl, sanitizedQuery);
-    const gameNames = result.map(item => item?._source?.Game);
+    const res = await axios.get(ec2Url, {
+      params: {
+        q: query
+      }, 
+      timeout: axiosTimeout
+    });
+    const gameNames = res?.data;
     let gameDataFalsysRemoved = [];
     if (gameNames.length > 0) {
-      const gameData = await redisClient.MGET(gameNames);
+      const rawGameData = await redisClient.MGET(gameNames);
+      const gameData = rawGameData.map(item => JSON.parse(item));
       gameDataFalsysRemoved = gameData.filter(Boolean);
+      gameDataFalsysRemoved.sort((a,b) => b.playercount - a.playercount);
     }
+    return response(200, gameDataFalsysRemoved.slice(0, gamesReturned));
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(gameDataFalsysRemoved),
-      headers: { 'Access-Control-Allow-Origin': '*', },
-    };
   } catch (error) {
     console.log(error);
-    return {
-      statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*', },
-    };
+    return response(500, []);
   }
 };
