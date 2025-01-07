@@ -8,7 +8,7 @@ Acts as an API for the search queries from the client. After sanitizing query, f
 
 | Name           | Value | Description                                                               |
 | -------------- | ----- | ------------------------------------------------------------------------- |
-| axiosTimeout   | 50000 | Timeout (ms) when getting game names from EC2.                            |
+| axiosTimeout   | 5000  | Timeout (ms) when getting game names from EC2.                            |
 | maxQueryLength | 30    | Only the first 30 characters of a search query are used. Rest is ignored. |
 | gamesReturned  | 10    | Number of results returned.                                               |
 
