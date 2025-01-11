@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y curl unzip
+      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "aws.zip"
+      - unzip aws.zip
+      - ./aws/install
+      - aws --version
+  build:
+    commands:
+      - cd tests/e2e
+      - npx cypress run
+  post_build:
+    commands:
+      - |
+        if [ -d cypress/screenshots ]; then
+          aws s3 sync cypress/screenshots s3://steamplayerse2screenshots --exclude "*" --include "*.png"
+        fi

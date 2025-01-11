@@ -87,3 +87,4 @@ OpenSearch is better choice.
    change data in the DB, and force start an update cycle anytime.
 3. ~~Replace OpenSearch with something cheaper.~~
    - EC2 running Flask Server and Woosh as search engine replaced OpenSearch
+4. Custom Docker image for CodeBuild tests
