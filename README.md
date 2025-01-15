@@ -65,6 +65,12 @@ Affiliate links can be shown as e.g. "Buy Here!" links next to the trending game
 Frontend is hosted in Amplify. When a code change is pushed into GitHub main branch, Amplify
 builds and deploys the updated code.
 
+### Testing:
+
+CodeBuild is triggered once an hour. It pulls Cypress Docker Image from ECR, installs needed
+dependencies and runs simple e2e tests straight to domain. If tests don't pass, screenshots taken by
+Cypress are saved to S3 and SNS topic is triggered to send email.
+
 ### Costs and scalability:
 
 As shown in the architecture there is a clear split between the backend, where the cost of the
@@ -87,4 +93,4 @@ OpenSearch is better choice.
    change data in the DB, and force start an update cycle anytime.
 3. ~~Replace OpenSearch with something cheaper.~~
    - EC2 running Flask Server and Woosh as search engine replaced OpenSearch
-4. Custom Docker image for CodeBuild tests
+4. Custom Docker Image for CodeBuild. On the other hand, this needs more maintenance.
